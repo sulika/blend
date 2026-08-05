@@ -31,6 +31,7 @@
             max-height: 100vh;
         }
         .sidebar-header { margin-bottom: 12px; }
+        .sidebar-brand { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #6a737d; margin-bottom: 8px; }
         .sidebar-back { color: #0366d6; text-decoration: none; font-size: 0.8rem; }
         .sidebar-back:hover { text-decoration: underline; }
         .sidebar-title { font-weight: 600; margin-top: 8px; color: #24292e; font-size: 0.9rem; }
@@ -80,6 +81,7 @@
 <body>
     <nav class="sidebar">
         <div class="sidebar-header">
+            <div class="sidebar-brand">Blend</div>
             <a href="/markdown" class="sidebar-back">← All Sources</a>
             <div class="sidebar-title" th:text="${page.sourceName()}">Source</div>
         </div>

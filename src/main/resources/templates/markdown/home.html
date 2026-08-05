@@ -18,7 +18,7 @@
             color: #24292e;
             line-height: 1.5;
         }
-        h1 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h1 { margin-bottom: 4px; }
         ul { list-style: none; padding: 0; }
         li { margin: 12px 0; }
         a { color: #0366d6; text-decoration: none; font-size: 1.05rem; }
@@ -33,10 +33,12 @@
         }
         .source-card:hover { background: #f6f8fa; }
         p.empty { color: #6a737d; }
+        .tagline { margin: 0 0 24px; padding-bottom: 20px; border-bottom: 1px solid #eaecef; font-size: 1.1rem; color: #6a737d; }
     </style>
 </head>
 <body>
-    <h1 th:text="${htmlConfig.title}">Markdown Viewer</h1>
+    <h1>Blend</h1>
+    <p class="tagline" th:text="${htmlConfig.title}">Markdown Viewer</p>
 
     <th:block th:if="${#lists.isEmpty(sources)}">
         <p class="empty">No sources configured. Add sources to <code>application.yml</code> under <code>app.markdown-viewer.sources</code>.</p>
