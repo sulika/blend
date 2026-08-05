@@ -1,0 +1,13 @@
+.DS_Store
+target/
+src/main/resources/application.yml
+.claude/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Logs
+*.log
+hs_err_pid*

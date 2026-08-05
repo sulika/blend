@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head><title>Fragments</title></head>
+<body>
+
+<div th:fragment="tree(nodes, currentPath)">
+    <ul class="tree-list">
+        <li th:each="node : ${nodes}" th:classappend="${node.directory()} ? 'tree-dir-item' : 'tree-file-item'">
+            <th:block th:if="${node.directory()}">
+                <details open>
+                    <summary class="tree-dir" th:text="${node.name()}">dir</summary>
+                    <div th:replace="~{markdown/fragments :: tree(${node.children()}, ${currentPath})}"></div>
+                </details>
+            </th:block>
+            <th:block th:unless="${node.directory()}">
+                <a th:if="${node.url()}" th:href="${node.url()}" th:text="${node.name()}"
+                   class="tree-file-link" th:classappend="${node.path() == currentPath} ? 'active'">file</a>
+                <span th:unless="${node.url()}" th:text="${node.name()}" class="tree-file-other">file</span>
+            </th:block>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${page.pageTitle()} + ' – ' + ${page.htmlTitle()}">Page</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <th:block th:each="css : ${page.cssFiles()}">
+        <link rel="stylesheet" th:href="${css}">
+    </th:block>
+    <link rel="stylesheet" href="/hljs/github.min.css">
+    <th:block th:if="${page.injectHead()}" th:utext="${page.injectHead()}"></th:block>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            color: #24292e;
+        }
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            border-right: 1px solid #e1e4e8;
+            padding: 16px;
+            overflow-y: auto;
+            background: #fafbfc;
+            font-size: 0.875rem;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+        }
+        .sidebar-header { margin-bottom: 12px; }
+        .sidebar-back { color: #0366d6; text-decoration: none; font-size: 0.8rem; }
+        .sidebar-back:hover { text-decoration: underline; }
+        .sidebar-title { font-weight: 600; margin-top: 8px; color: #24292e; font-size: 0.9rem; }
+        .sidebar hr { border: none; border-top: 1px solid #e1e4e8; margin: 8px 0; }
+        .tree-list { list-style: none; padding-left: 0; }
+        .tree-list .tree-list { padding-left: 12px; }
+        .tree-dir-item { margin: 2px 0; }
+        .tree-file-item { margin: 1px 0; }
+        details { border: none; }
+        details > .tree-list { margin-top: 2px; }
+        summary.tree-dir {
+            font-weight: 600;
+            color: #24292e;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            user-select: none;
+        }
+        summary.tree-dir::-webkit-details-marker { display: none; }
+        summary.tree-dir::before { content: "▶"; font-size: 0.6rem; color: #8b949e; transition: transform 0.15s; }
+        details[open] > summary.tree-dir::before { transform: rotate(90deg); }
+        summary.tree-dir:hover { background: #e8eaed; }
+        .tree-file-link { color: #0366d6; text-decoration: none; display: block; padding: 2px 4px; border-radius: 4px; }
+        .tree-file-link:hover { background: #e8eaed; text-decoration: none; }
+        .tree-file-link.active { background: #e0edff; color: #0366d6; font-weight: 600; }
+        .tree-file-other { color: #8b949e; display: block; padding: 2px 4px; font-size: 0.8rem; }
+        .content {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 48px;
+            overflow-x: auto;
+        }
+        .markdown-body {
+            --reading-width: 860px;
+            line-height: 1.6;
+        }
+        /* Keep prose at reading width; tables (wrapped server-side) break out to the full column. */
+        .markdown-body > :not(.table-wrapper) {
+            max-width: var(--reading-width);
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <a href="/markdown" class="sidebar-back">← All Sources</a>
+            <div class="sidebar-title" th:text="${page.sourceName()}">Source</div>
+        </div>
+        <hr>
+        <div th:replace="~{markdown/fragments :: tree(${page.fileTree()}, ${page.currentPath()})}"></div>
+    </nav>
+    <main class="content">
+        <article class="markdown-body" th:utext="${page.htmlContent()}">Content</article>
+    </main>
+    <th:block th:if="${page.injectBodyEnd()}" th:utext="${page.injectBodyEnd()}"></th:block>
+    <script src="/hljs/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
