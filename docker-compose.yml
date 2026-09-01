@@ -1,0 +1,15 @@
+services:
+  blend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      # Points Spring at the config file mounted below (gitignored — it
+      # usually contains machine-specific paths).
+      SPRING_CONFIG_ADDITIONAL_LOCATION: optional:file:/app/config/application.yml
+    volumes:
+      - ./application.yml:/app/config/application.yml:ro
+
+      # Run ./setup.sh (or `make setup`) to manage sources and generate a
+      # docker-compose.override.yml with the matching bind mounts for every
+      # `root:` path in application.yml, instead of editing this by hand.
