@@ -1,0 +1,10 @@
+target/
+.git/
+.idea/
+.vscode/
+*.iml
+.DS_Store
+.claude/
+*.log
+hs_err_pid*
+docker-compose.yml

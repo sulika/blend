@@ -23,7 +23,7 @@ Blend scratches that itch: point it at one or more local folders full of Markdow
 
 ### Configure your sources
 
-Add your Markdown directories to `src/main/resources/application.yml`:
+Add your Markdown directories to `application.yml` in the repo root (create it if it doesn't exist — it's gitignored since it holds machine-specific paths). If you're using Docker, `./setup.sh` (below) generates and manages this file for you.
 
 ```yaml
 app:
@@ -73,6 +73,34 @@ make test     # run unit tests
 make package  # build an executable JAR
 make clean    # remove build artifacts
 ```
+
+### Run it with Docker
+
+No JVM needed on the host — just Docker.
+
+Easiest path — run the setup wizard:
+
+```bash
+./setup.sh
+# or
+make setup
+```
+
+It walks you through adding/removing Markdown sources (writing `application.yml`), generates a `docker-compose.override.yml` with a matching read-only bind mount for each source's `root:` path, and starts the app with `docker compose up --build`.
+
+Manual alternative, if you'd rather do it yourself:
+
+1. Create `application.yml` in the repo root (same format as above).
+2. In `docker-compose.override.yml` (gitignored), add a read-only bind mount for each `root:` path, at the **same path** inside the container:
+   ```yaml
+   services:
+     blend:
+       volumes:
+         - /Users/matias/docs/english-teaching:/Users/matias/docs/english-teaching:ro
+   ```
+3. `docker compose up --build` (or `make docker-up`).
+
+Either way, the app is then available at `http://localhost:8080`, same as running it locally.
 
 ### Browse
 
