@@ -76,6 +76,11 @@
         .markdown-body > :not(.table-wrapper) {
             max-width: var(--reading-width);
         }
+        .markdown-body .mermaid {
+            margin: 16px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -93,6 +98,18 @@
     </main>
     <th:block th:if="${page.injectBodyEnd()}" th:utext="${page.injectBodyEnd()}"></th:block>
     <script src="/hljs/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+    <script src="/mermaid/mermaid.min.js"></script>
+    <script>
+        // Turn ```mermaid fenced blocks into diagram containers before highlighting.
+        document.querySelectorAll('pre > code.language-mermaid').forEach(code => {
+            const div = document.createElement('div');
+            div.className = 'mermaid';
+            div.textContent = code.textContent;
+            code.parentElement.replaceWith(div);
+        });
+        mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' });
+        mermaid.run({ querySelector: '.markdown-body .mermaid' });
+        hljs.highlightAll();
+    </script>
 </body>
 </html>
